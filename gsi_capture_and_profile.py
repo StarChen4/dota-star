@@ -138,6 +138,12 @@ class SlidingWindowStats:
             self.total_frames -= 1
             for p, ty in old_items:
                 self.field_presence[p] -= 1
+                # 递减 field_types 计数
+                if p in self.field_types:
+                    self.field_types[p][ty] -= 1
+                    if self.field_types[p][ty] <= 0:
+                        del self.field_types[p][ty]
+
                 if self.field_presence[p] <= 0:
                     del self.field_presence[p]
                     if p in self.field_types:
